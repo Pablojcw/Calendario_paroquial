@@ -17,7 +17,10 @@
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:setup": "npm run db:setup --workspace backend",
+    "db:seed": "npm run db:seed --workspace backend",
+    "db:import": "npm run db:import --workspace backend --"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
