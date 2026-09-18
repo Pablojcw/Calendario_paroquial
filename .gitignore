@@ -1,0 +1,28 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+coverage/
+*.tsbuildinfo
+
+# Ambiente — nunca versionar segredos reais
+.env
+.env.local
+.env.*.local
+!.env.example
+!**/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE / SO
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Banco (dump/backup locais)
+*.sql.bak
+*.dump

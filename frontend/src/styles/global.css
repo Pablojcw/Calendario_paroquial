@@ -1,0 +1,711 @@
+:root {
+  color-scheme: light;
+  --burgundy: #7f1d1d;
+  --burgundy-dark: #5c1212;
+  --burgundy-light: #b91c1c;
+  --gold: #b45309;
+  --cream: #faf6ef;
+  --paper: #ffffff;
+  --ink: #241d19;
+  --muted: #6d6257;
+  --line: #e7ddd0;
+  --line-strong: #d8c9b6;
+  --ok: #15803d;
+  --warn: #b45309;
+  --danger: #b91c1c;
+  --chip: #efe4d7;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--serif);
+  line-height: 1.2;
+}
+
+a {
+  color: var(--burgundy);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* ------------------------------------------------------------------ layout */
+.site-header {
+  background: linear-gradient(160deg, var(--burgundy) 0%, var(--burgundy-dark) 100%);
+  color: #fff;
+}
+
+.site-header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.site-header h1 small {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #f3e3c7;
+  margin-top: 0.1rem;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.site-header nav a {
+  color: #fff;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.site-header nav a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  text-decoration: none;
+}
+
+.site-header nav a.active {
+  background: #fff;
+  color: var(--burgundy);
+  font-weight: 600;
+}
+
+.site-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.2rem 1rem 3rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1.4rem 1rem;
+}
+
+.site-footer a {
+  color: var(--burgundy);
+}
+
+/* ------------------------------------------------------------------ cards */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+  box-shadow: 0 1px 2px rgba(90, 60, 30, 0.05);
+}
+
+.page-title {
+  margin: 0 0 0.2rem;
+  font-size: 1.5rem;
+}
+
+.page-subtitle {
+  color: var(--muted);
+  margin: 0 0 1.2rem;
+  font-size: 0.95rem;
+}
+
+/* ------------------------------------------------------------------ buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.btn:hover {
+  background: #fbf7f0;
+  border-color: var(--muted);
+}
+
+.btn--primary {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--burgundy-dark);
+  border-color: var(--burgundy-dark);
+}
+
+.btn--ghost {
+  border-color: transparent;
+}
+
+.btn--danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.btn--danger:hover {
+  background: #fdf2f2;
+}
+
+.btn--sm {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.82rem;
+  border-radius: 6px;
+}
+
+.btn--block {
+  width: 100%;
+  justify-content: center;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ------------------------------------------------------------------ forms */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  background: #fff;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--burgundy-light);
+  outline-offset: 0;
+  border-color: var(--burgundy-light);
+}
+
+.field .hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0 0.9rem;
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
+.form-error {
+  background: #fdf2f2;
+  border: 1px solid #f3c6c6;
+  color: var(--danger);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------------ filter bar */
+.filters {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.filters .field {
+  margin-bottom: 0;
+  min-width: 160px;
+}
+
+/* ------------------------------------------------------------------ calendar */
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.calendar-head {
+  background: var(--burgundy);
+  color: #fff;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0;
+  letter-spacing: 0.04em;
+}
+
+.calendar-day {
+  background: var(--paper);
+  min-height: 104px;
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.calendar-day:hover {
+  background: #fdfaf3;
+}
+
+.calendar-day--other {
+  background: #f4efe7;
+}
+
+.calendar-day--other .calendar-day__num {
+  color: #b3a898;
+}
+
+.calendar-day--other .event-chip {
+  opacity: 0.85;
+}
+
+.calendar-day--other .calendar-day__holy {
+  color: #c2a984;
+}
+
+.calendar-day--today {
+  box-shadow: inset 0 0 0 2px var(--burgundy-light);
+}
+
+.calendar-day--selected {
+  background: var(--chip);
+}
+
+.calendar-day__num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--burgundy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.calendar-day__holy {
+  font-size: 0.62rem;
+  color: var(--gold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.event-chip {
+  font-size: 0.66rem;
+  line-height: 1.2;
+  padding: 0.12rem 0.28rem;
+  border-radius: 4px;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-left: 3px solid rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.event-chip strong {
+  font-weight: 700;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+/* ------------------------------------------------------------------ day panel */
+.day-panel {
+  margin-top: 1rem;
+}
+
+.day-panel h3 {
+  margin: 0 0 0.5rem;
+}
+
+.occ-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.occ-item {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--brand, var(--burgundy));
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+}
+
+.occ-item time {
+  font-weight: 700;
+  color: var(--burgundy);
+  display: inline-block;
+  min-width: 3.2rem;
+}
+
+.occ-item h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.occ-item .meta {
+  font-size: 0.82rem;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.occ-item .categoria-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.08rem 0.45rem;
+  border-radius: 999px;
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+.serie-badge {
+  background: var(--chip);
+  color: var(--burgundy-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.06rem 0.5rem;
+}
+
+/* ------------------------------------------------------------------ upcoming list */
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.date-group {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 1rem;
+  padding: 0.6rem 0;
+}
+
+.date-badge {
+  text-align: center;
+  background: var(--burgundy);
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.4rem 0;
+  align-self: start;
+}
+
+.date-badge .day {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  display: block;
+}
+
+.date-badge .month {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ------------------------------------------------------------------ login */
+.auth-box {
+  max-width: 400px;
+  margin: 2rem auto 0;
+}
+
+/* ------------------------------------------------------------------ admin */
+.admin-bar {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.admin-bar a,
+.admin-bar button {
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+}
+
+.admin-bar a.active {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: #fff;
+}
+
+.admin-bar a:hover,
+.admin-bar button:hover {
+  background: #fbf7f0;
+}
+
+.admin-bar a.active:hover {
+  background: var(--burgundy-dark);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-weight: 600;
+}
+
+.badge--ok {
+  background: #e7f6ec;
+  color: var(--ok);
+}
+
+.badge--danger {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+.badge--muted {
+  background: var(--chip);
+  color: var(--muted);
+}
+
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem 0;
+  color: var(--muted);
+}
+
+.spinner::before {
+  content: '';
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--burgundy);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem 0;
+}
+
+/* ------------------------------------------------------------------ institution */
+.institution {
+  line-height: 1.65;
+}
+
+.institution h2 {
+  font-size: 1.35rem;
+}
+
+.institution .details {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.2rem 0;
+}
+
+.institution .details dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem 1.4rem;
+  margin: 0;
+}
+
+.institution .details dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.institution .details dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.institution .conteudo {
+  white-space: pre-line;
+}
+
+/* ------------------------------------------------------------------ print */
+@media print {
+  body {
+    background: #fff;
+  }
+  .site-header nav,
+  .site-footer,
+  .calendar-toolbar,
+  .filters,
+  .no-print {
+    display: none !important;
+  }
+  .calendar-day {
+    min-height: 72px;
+  }
+  .site-content {
+    padding: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .calendar-day {
+    min-height: 78px;
+  }
+  .event-chip {
+    font-size: 0.58rem;
+    padding: 0.1rem 0.22rem;
+  }
+  .site-header__inner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .site-header nav {
+    justify-content: center;
+  }
+  .calendar-head {
+    font-size: 0.66rem;
+  }
+}
