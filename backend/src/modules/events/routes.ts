@@ -52,11 +52,6 @@ function diffRows(before: EventViewRow, after: EventViewRow): Record<string, unk
 }
 
 export function registerEventRoutes(app: FastifyInstance): void {
-  // ==================================================================
-  // PÚBLICO
-  // ==================================================================
-
-  // GET /api/events/public?from&to&comunidadeId&categoriaId
   app.get('/api/events/public', async (request) => {
     const raw = request.query as Record<string, string>;
     const parsed = publicQuerySchema.safeParse(raw);
@@ -75,7 +70,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     });
   });
 
-  // GET /api/events/public/proximos?limit&comunidadeId&categoriaId
   app.get('/api/events/public/proximos', async (request) => {
     const raw = request.query as Record<string, string>;
     const limit = Math.min(Math.max(Number(raw.limit) || 20, 1), 100);
@@ -89,7 +83,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return ocorrencias.filter((o) => o.data >= from).slice(0, limit);
   });
 
-  // GET /api/events/public/:id — ocorrências de um único evento num intervalo
   app.get('/api/events/public/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = await getEvent(id);
@@ -118,11 +111,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     reply.send({ event: toEventDTO(event), datas: dates.filter((d) => !cancelled.has(d)) });
   });
 
-  // ==================================================================
-  // ADMIN
-  // ==================================================================
-
-  // GET /api/events — lista (filtros), séries como definição
   app.get('/api/events', { preHandler: [app.authenticate] }, async (request) => {
     const params = eventQuerySchema.parse(request.query);
     const rows = await listEvents({
@@ -139,7 +127,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return rows.map(toEventDTO);
   });
 
-  // GET /api/events/:id — detalhe (com filhos se for pai, ou pai se for filho)
   app.get('/api/events/:id', { preHandler: [app.authenticate] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = await getEvent(id);
@@ -155,7 +142,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     });
   });
 
-  // POST /api/events — criar evento único ou série recorrente
   app.post('/api/events', { preHandler: [app.authenticate] }, async (request, reply) => {
     const input = eventInputSchema.parse(request.body);
     const row = await createEvent(input, request.userPrincipal.sub);
@@ -168,7 +154,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return reply.code(201).send(toEventDTO(row));
   });
 
-  // PUT /api/events/:id — editar
   app.put('/api/events/:id', { preHandler: [app.authenticate] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const patch = eventPatchSchema.parse(request.body);
@@ -183,7 +168,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return reply.send(toEventDTO(after));
   });
 
-  // DELETE /api/events/:id — excluir (junto com filhos de sequência)
   app.delete('/api/events/:id', { preHandler: [app.authenticate] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = await getEvent(id);
@@ -199,7 +183,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return reply.code(204).send();
   });
 
-  // POST /api/events/:id/cancel
   app.post('/api/events/:id/cancel', { preHandler: [app.authenticate] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = await setStatus(id, 'cancelado', request.userPrincipal.sub);
@@ -212,7 +195,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return reply.send(toEventDTO(event));
   });
 
-  // POST /api/events/:id/reinstate
   app.post('/api/events/:id/reinstate', { preHandler: [app.authenticate] }, async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = await setStatus(id, 'confirmado', request.userPrincipal.sub);
@@ -225,7 +207,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     return reply.send(toEventDTO(event));
   });
 
-  // POST /api/events/:id/occurrences/:data/cancel — cancela UMA ocorrência
   app.post(
     '/api/events/:id/occurrences/:data/cancel',
     { preHandler: [app.authenticate] },
@@ -246,7 +227,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     },
   );
 
-  // POST /api/events/:id/occurrences/:data/reinstate
   app.post(
     '/api/events/:id/occurrences/:data/reinstate',
     { preHandler: [app.authenticate] },
@@ -266,7 +246,6 @@ export function registerEventRoutes(app: FastifyInstance): void {
     },
   );
 
-  // GET /api/events/:id/history — histórico do evento (e da série, se filho)
   app.get('/api/events/:id/history', { preHandler: [app.authenticate] }, async (request) => {
     const { id } = request.params as { id: string };
     const event = await getEvent(id);

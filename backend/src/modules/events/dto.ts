@@ -104,10 +104,6 @@ export type PublicRangeInput = {
   categoriaId?: string;
 };
 
-/**
- * Expande as séries recorrentes e sequências em ocorrências concretas
- * dentro de [from, to]. É o endpoint principal do calendário público.
- */
 export async function buildPublicOccurrences(input: PublicRangeInput): Promise<PublicOccurrence[]> {
   const { rows } = await queryEventsPublic(input);
 

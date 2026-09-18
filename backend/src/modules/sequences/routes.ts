@@ -7,11 +7,6 @@ import { logChange } from '../changelog/service.js';
 import { toEventDTO } from '../events/dto.js';
 import { sequenceCreateSchema } from '../events/schemas.js';
 
-/**
- * Cria uma sequência de eventos (novena, tríduo, acampamento):
- * um evento pai "guarda-chuva" + N eventos filhos com data própria,
- * todos vinculados pelo evento_pai_id.
- */
 export function registerSequenceRoutes(app: FastifyInstance): void {
   app.post('/api/sequences', { preHandler: [app.authenticate] }, async (request, reply) => {
     const input = sequenceCreateSchema.parse(request.body);

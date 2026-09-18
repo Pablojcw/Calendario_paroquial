@@ -19,11 +19,6 @@ function sanitize(user: Pick<UserRow, 'id' | 'nome' | 'email' | 'papel'>): Sanit
 }
 
 export function registerAuthRoutes(app: FastifyInstance): void {
-  // ------------------------------------------------------------------
-  // POST /api/auth/register — bootstrap do primeiro administrador.
-  // Só disponível quando AUTH_REGISTER_OPEN=true (desligue em produção,
-  // o seed cria o admin via variáveis de ambiente).
-  // ------------------------------------------------------------------
   app.post(
     '/api/auth/register',
     async (request, reply) => {
@@ -52,9 +47,6 @@ export function registerAuthRoutes(app: FastifyInstance): void {
     },
   );
 
-  // ------------------------------------------------------------------
-  // POST /api/auth/login
-  // ------------------------------------------------------------------
   app.post(
     '/api/auth/login',
     async (request, reply) => {
@@ -82,9 +74,6 @@ export function registerAuthRoutes(app: FastifyInstance): void {
     },
   );
 
-  // ------------------------------------------------------------------
-  // GET /api/auth/me — usuário logado (protegido por Bearer token)
-  // ------------------------------------------------------------------
   app.get('/api/auth/me', { preHandler: [app.authenticate] }, async (request) => {
     const { rows } = await query<UserRow>(
       'SELECT id, nome, email, papel FROM users WHERE id = $1 AND ativo = true',
@@ -96,5 +85,4 @@ export function registerAuthRoutes(app: FastifyInstance): void {
   });
 }
 
-// schema de query usado internamente para validar ids vindos da URL
 export const idParamSchema = z.string().uuid();

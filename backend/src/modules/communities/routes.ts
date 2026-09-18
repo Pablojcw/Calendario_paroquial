@@ -23,7 +23,6 @@ function serialize(row: CommunityRow) {
 }
 
 export function registerCommunityRoutes(app: FastifyInstance): void {
-  // Público: comunidades ativas
   app.get('/api/communities', async () => {
     const { rows } = await query<CommunityRow>(
       `SELECT * FROM communities WHERE ativa = true ORDER BY ordem, nome`,

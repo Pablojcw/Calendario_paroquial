@@ -1,10 +1,3 @@
-/**
- * Seed inicial: cria o usuário administrador e as comunidades-base.
- * Uso: npm run db:seed
- *
- * As comunidades e a agenda real (2026) entram via importação CSV:
- *   npm run db:import -- caminho/para/agenda.csv
- */
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { env } from '../src/config/env.js';

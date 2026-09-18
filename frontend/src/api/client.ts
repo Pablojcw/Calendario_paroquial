@@ -49,7 +49,7 @@ export async function apiFetch<T>(path: string, init: ApiInit = {}): Promise<T> 
       if (isRecord(data) && typeof data.error === 'string') message = data.error;
       if (isRecord(data) && Array.isArray(data.details)) details = data.details;
     } catch {
-      // corpo não-JSON: mantém a mensagem padrão
+      void text;
     }
     throw new ApiError(response.status, message, details);
   }

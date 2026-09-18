@@ -1,27 +1,3 @@
-/**
- * Importação da Agenda Pastoral a partir de CSV.
- *
- * Uso:
- *   npm run db:import -- caminho/para/agenda.csv
- *
- * Colunas esperadas (cabeçalho):
- *   titulo, categoria, comunidade, data, hora, responsavel, descricao,
- *   visibilidade, recorrencia, dia_semana, dia_mes, semana_mes, data_fim,
- *   local, serie
- *
- *   - data: DD/MM/YYYY ou YYYY-MM-DD
- *   - hora: HH:MM ou HHhMM
- *   - recorrencia: nenhuma | semanal | mensal (semanal exige dia_semana;
- *     mensal exige dia_mes OU semana_mes+dia_semana)
- *   - dia_semana: domingo..sabado ou 0..6 (0=domingo)
- *   - serie: nome do "guarda-chuva". Linhas com o mesmo valor de serie viram
- *     uma sequência (pai + filhos com data própria). As linhas de uma mesma
- *     serie devem estar em ordem cronológica.
- *   - visibilidade: publico | interno (padrão publico)
- *
- * Categorias e comunidades não encontradas são criadas automaticamente.
- * Veja scripts/import-exemplo.csv. Importação é atômica (transação única).
- */
 import 'dotenv/config';
 import { readFileSync } from 'node:fs';
 import type pg from 'pg';
@@ -104,7 +80,7 @@ function parseCSV(text: string): Row[] {
   pushField();
   pushRow();
 
-  return rows.filter((r) => Object.values(r).some((v) => (v ?? '').trim() !== ''));
+  return rows.filter((r) => Object.values(r).some((v) => v.trim() !== ''));
 }
 
 function parseDate(value: string): string {

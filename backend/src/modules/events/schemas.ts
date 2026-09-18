@@ -69,10 +69,6 @@ export const eventInputSchema = z
 
 export type EventInput = z.infer<typeof eventInputSchema>;
 
-/**
- * Schema de edição (PUT): campos individuais, sem defaults e sem validação
- * cruzada — o merge com o estado atual acontece no repo.
- */
 export const eventPatchSchema = z.object({
   titulo: z.string().trim().min(2, 'Título é obrigatório').max(200).optional(),
   descricao: z.string().trim().max(5000).nullable().optional(),

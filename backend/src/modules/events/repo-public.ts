@@ -8,11 +8,6 @@ export type PublicRangeInput = {
   categoriaId?: string;
 };
 
-/**
- * Consulta os eventos públicos + confirmados que se sobrepõem a [from, to].
- * Exclui "eventos guarda-chuva" (pais de sequências), pois são agregados
- * exibidos via seus filhos.
- */
 export async function queryEventsPublic(input: PublicRangeInput): Promise<{ rows: EventViewRow[] }> {
   const params: unknown[] = [];
   const conditions: string[] = [];

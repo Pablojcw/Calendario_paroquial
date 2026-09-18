@@ -1,8 +1,3 @@
-/**
- * Aplica o schema.sql ao banco de dados.
- * Uso: npm run db:setup
- * Cria o banco "paroquia" se ele ainda não existir (via conexão template postgres).
- */
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';

@@ -38,11 +38,6 @@ type EventFilters = {
   q?: string;
 };
 
-/**
- * Monta WHERE considerando sobreposição no intervalo [from, to]:
- * um evento (ou série) aparece se data_inicio <= to E
- * (data_fim IS NULL OU data_fim >= from).
- */
 function buildWhere(filters: EventFilters): { clause: string; params: unknown[] } {
   const b: ParamsBuilder = { params: [], conditions: [] };
   const { params, conditions } = b;
@@ -244,9 +239,6 @@ export async function deleteEvent(id: string): Promise<void> {
   if (!rowCount || rowCount === 0) throw new HttpError(404, 'Evento não encontrado.');
 }
 
-// ------------------------------------------------------------------
-// Cancelamento de ocorrências específicas
-// ------------------------------------------------------------------
 export async function listCancellations(
   eventoIds: string[],
   from?: string,

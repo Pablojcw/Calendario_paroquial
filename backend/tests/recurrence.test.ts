@@ -18,9 +18,8 @@ describe('dates', () => {
   });
 
   it('weekdayOf segue 0=domingo', () => {
-    // 2026-01-01 é quinta-feira
     expect(weekdayOf('2026-01-01')).toBe(4);
-    expect(weekdayOf('2026-01-04')).toBe(0); // domingo
+    expect(weekdayOf('2026-01-04')).toBe(0);
   });
 
   it('nthWeekdayDate: 2º domingo de fevereiro/2026', () => {
@@ -28,7 +27,7 @@ describe('dates', () => {
   });
 
   it('nthWeekdayDate: último domingo quando o 5º não existe', () => {
-    expect(nthWeekdayDate(2026, 1, 0, 5)).toBe('2026-02-22'); // fev/2026 tem 4 domingos
+    expect(nthWeekdayDate(2026, 1, 0, 5)).toBe('2026-02-22');
   });
 });
 
@@ -66,7 +65,7 @@ describe('occurrencesBetween', () => {
 
   it('semanal: terças de janeiro/2026', () => {
     const result = occurrencesBetween(
-      { ...base, recorrencia: 'semanal', dataInicio: '2026-01-01', diaSemana: 2 }, // terça
+      { ...base, recorrencia: 'semanal', dataInicio: '2026-01-01', diaSemana: 2 },
       '2026-01-01',
       '2026-01-31',
     );

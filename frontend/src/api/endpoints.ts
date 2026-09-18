@@ -31,7 +31,6 @@ function qs(params: Record<string, unknown>): string {
 }
 
 export const api = {
-  // ---------------------------------------------------------------- público
   listCategories: () => apiFetch<Categoria[]>('/api/categories'),
 
   listCommunities: () => apiFetch<Comunidade[]>('/api/communities'),
@@ -44,7 +43,6 @@ export const api = {
   upcomingEvents: (params: { limit?: number; comunidadeId?: string; categoriaId?: string } = {}) =>
     apiFetch<PublicOccurrence[]>(`/api/events/public/proximos${qs(params)}`),
 
-  // ---------------------------------------------------------------- auth
   login: (email: string, senha: string) =>
     apiFetch<LoginResponse>('/api/auth/login', {
       method: 'POST',
@@ -61,7 +59,6 @@ export const api = {
 
   me: () => apiFetch<AuthUser>('/api/auth/me'),
 
-  // ---------------------------------------------------------------- admin / events
   listEvents: (params: EventListParams = {}) =>
     apiFetch<EventDTO[]>(`/api/events${qs({ ...params, limit: params.limit ?? 200 })}`),
 
@@ -108,7 +105,6 @@ export const api = {
   changelog: (params: { limit?: number; offset?: number; eventoId?: string } = {}) =>
     apiFetch<ChangelogEntry[]>(`/api/changelog${qs(params)}`),
 
-  // ---------------------------------------------------------------- admin / categorias
   createCategory: (input: Pick<Categoria, 'nome' | 'cor'> & { ordem?: number }) =>
     apiFetch<Categoria>('/api/categories', {
       method: 'POST',
@@ -123,7 +119,6 @@ export const api = {
 
   deleteCategory: (id: string) => apiFetch<undefined>(`/api/categories/${id}`, { method: 'DELETE' }),
 
-  // ---------------------------------------------------------------- admin / comunidades
   createCommunity: (input: Pick<Comunidade, 'nome'> & { endereco?: string | null; bairro?: string | null; ordem?: number }) =>
     apiFetch<Comunidade>('/api/communities', {
       method: 'POST',
@@ -138,7 +133,6 @@ export const api = {
 
   deleteCommunity: (id: string) => apiFetch<undefined>(`/api/communities/${id}`, { method: 'DELETE' }),
 
-  // ---------------------------------------------------------------- admin / institucional
   updateInstitution: (patch: InstitutionInput) =>
     apiFetch<Institution>('/api/institution', {
       method: 'PUT',

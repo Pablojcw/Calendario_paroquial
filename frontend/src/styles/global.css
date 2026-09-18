@@ -64,7 +64,6 @@ textarea {
   font: inherit;
 }
 
-/* ------------------------------------------------------------------ layout */
 .site-header {
   background: linear-gradient(160deg, var(--burgundy) 0%, var(--burgundy-dark) 100%);
   color: #fff;
@@ -138,7 +137,6 @@ textarea {
   color: var(--burgundy);
 }
 
-/* ------------------------------------------------------------------ cards */
 .card {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -158,7 +156,6 @@ textarea {
   font-size: 0.95rem;
 }
 
-/* ------------------------------------------------------------------ buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -217,7 +214,6 @@ textarea {
   cursor: not-allowed;
 }
 
-/* ------------------------------------------------------------------ forms */
 .field {
   display: flex;
   flex-direction: column;
@@ -273,7 +269,6 @@ textarea {
   font-size: 0.9rem;
 }
 
-/* ------------------------------------------------------------------ filter bar */
 .filters {
   display: flex;
   gap: 0.6rem;
@@ -287,7 +282,6 @@ textarea {
   min-width: 160px;
 }
 
-/* ------------------------------------------------------------------ calendar */
 .calendar-toolbar {
   display: flex;
   align-items: center;
@@ -413,7 +407,6 @@ textarea {
   vertical-align: middle;
 }
 
-/* ------------------------------------------------------------------ day panel */
 .day-panel {
   margin-top: 1rem;
 }
@@ -477,7 +470,6 @@ textarea {
   padding: 0.06rem 0.5rem;
 }
 
-/* ------------------------------------------------------------------ upcoming list */
 .upcoming-list {
   display: flex;
   flex-direction: column;
@@ -513,13 +505,11 @@ textarea {
   letter-spacing: 0.05em;
 }
 
-/* ------------------------------------------------------------------ login */
 .auth-box {
   max-width: 400px;
   margin: 2rem auto 0;
 }
 
-/* ------------------------------------------------------------------ admin */
 .admin-bar {
   display: flex;
   gap: 0.3rem;
@@ -628,7 +618,6 @@ textarea {
   padding: 2rem 0;
 }
 
-/* ------------------------------------------------------------------ institution */
 .institution {
   line-height: 1.65;
 }
@@ -668,7 +657,6 @@ textarea {
   white-space: pre-line;
 }
 
-/* ------------------------------------------------------------------ print */
 @media print {
   body {
     background: #fff;

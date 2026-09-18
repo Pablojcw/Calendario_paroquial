@@ -6,15 +6,11 @@ export type RecurrencePattern = {
   recorrencia: 'nenhuma' | 'semanal' | 'mensal';
   dataInicio: string;
   dataFim: string | null;
-  diaSemana: number | null; // 0=domingo
-  diaMes: number | null; // 1..31
-  semanaMes: number | null; // 1..5 (5 = última)
+  diaSemana: number | null;
+  diaMes: number | null;
+  semanaMes: number | null;
 };
 
-/**
- * Computa as datas (YYYY-MM-DD) em que um evento acontece dentro do
- * intervalo [from, to], de acordo com seu padrão de recorrência.
- */
 export function occurrencesBetween(pattern: RecurrencePattern, from: string, to: string): string[] {
   const result: string[] = [];
   const start = pattern.dataInicio > from ? pattern.dataInicio : from;
@@ -23,7 +19,6 @@ export function occurrencesBetween(pattern: RecurrencePattern, from: string, to:
   if (start > end) return result;
 
   if (pattern.recorrencia === 'nenhuma') {
-    // Sem data_fim: ocorrência única. Com data_fim: multidiário (retiro etc.).
     if (!pattern.dataFim) {
       if (pattern.dataInicio >= start && pattern.dataInicio <= end) {
         result.push(pattern.dataInicio);
@@ -41,7 +36,6 @@ export function occurrencesBetween(pattern: RecurrencePattern, from: string, to:
   if (pattern.recorrencia === 'semanal') {
     const weekday = pattern.diaSemana;
     if (weekday === null) return result;
-    // Alinha a primeira ocorrência ao dia da semana correto.
     let cursor = start;
     while (weekdayOf(cursor) !== weekday) {
       cursor = addDays(cursor, 1);
@@ -52,7 +46,6 @@ export function occurrencesBetween(pattern: RecurrencePattern, from: string, to:
     return result;
   }
 
-  // mensal
   const startDate = parseISODate(start);
   const endDate = parseISODate(end);
   for (

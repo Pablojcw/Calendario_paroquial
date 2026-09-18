@@ -15,13 +15,11 @@ export const MONTHS_LONG = [
   'Dezembro',
 ];
 
-/** Converte 'YYYY-MM-DD' em Date local (meia-noite, sem fuso). */
 export function parseISO(iso: string): Date {
   const [y, m, d] = iso.split('-').map(Number);
   return new Date(y ?? 1970, (m ?? 1) - 1, d ?? 1);
 }
 
-/** Serializa Date local como 'YYYY-MM-DD'. */
 export function toISO(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -29,7 +27,6 @@ export function toISO(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-/** '2026-09-17' -> '17/09/2026' */
 export function formatBR(iso: string): string {
   const [y, m, d] = iso.split('-');
   return `${d}/${m}/${y}`;
@@ -39,7 +36,6 @@ export function todayISO(): string {
   return toISO(new Date());
 }
 
-/** Primeiro dia (semana começando no domingo) do grid que contém a data. */
 export function gridStart(iso: string): string {
   const dow = parseISO(iso).getDay();
   const date = parseISO(iso);
@@ -47,7 +43,6 @@ export function gridStart(iso: string): string {
   return toISO(date);
 }
 
-/** 42 dias cobrindo o grid do mês de `iso`. */
 export function monthGrid(iso: string): string[] {
   const first = parseISO(iso);
   const start = gridStart(toISO(first));

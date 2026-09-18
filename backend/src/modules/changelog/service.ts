@@ -10,9 +10,6 @@ export type LogAction =
   | 'occurrence_reinstate'
   | 'sequence_create';
 
-/**
- * Registra uma entrada no histórico de alterações.
- */
 export async function logChange(input: {
   eventoId?: string;
   serieId?: string;
