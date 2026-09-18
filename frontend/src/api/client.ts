@@ -26,6 +26,8 @@ export function setToken(token: string | null): void {
 
 type ApiInit = RequestInit & { skipAuth?: boolean };
 
+const API_BASE = ((import.meta.env.VITE_API_URL as string | undefined) ?? '').replace(/\/$/, '');
+
 export async function apiFetch<T>(path: string, init: ApiInit = {}): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body !== undefined && !headers.has('Content-Type')) {
@@ -36,7 +38,8 @@ export async function apiFetch<T>(path: string, init: ApiInit = {}): Promise<T> 
     if (token) headers.set('Authorization', `Bearer ${token}`);
   }
 
-  const response = await fetch(path, { ...init, headers });
+  const url = path.startsWith('http') ? path : `${API_BASE}${path}`;
+  const response = await fetch(url, { ...init, headers });
 
   if (response.status === 204) return undefined as T;
 
