@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: paroquia
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
       - paroquia_pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -16,6 +16,39 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: paroquia-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/paroquia
+      JWT_SECRET: e4a32274dbea57f8cebf8ba01faa721ce8fc5aef6284785ced0f1b1e9e4b4042aa002e07a043b2b2ed4717ffb8ff92b3
+      CORS_ORIGIN: http://localhost:8080
+      AUTH_REGISTER_OPEN: 'true'
+      BOOTSTRAP_ADMIN_NOME: Administrador
+      BOOTSTRAP_ADMIN_EMAIL: admin@paroquia.local
+      BOOTSTRAP_ADMIN_SENHA: trocar-senha-123
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3003:3000'
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: paroquia-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - '8080:80'
 
 volumes:
   paroquia_pgdata:

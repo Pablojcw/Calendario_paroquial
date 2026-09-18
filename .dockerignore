@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.gitignore
+.idea
+.vscode
+*.log
+*.tsbuildinfo
+.env
+**/.env
+backend/.env
+.DS_Store
+Thumbs.db
