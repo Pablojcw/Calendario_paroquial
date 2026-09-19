@@ -133,10 +133,6 @@ export function EventDetailPage() {
                 </td>
               </tr>
               <tr>
-                <th>Visibilidade</th>
-                <td>{event.visibilidade === 'publico' ? 'Público' : 'Interno'}</td>
-              </tr>
-              <tr>
                 <th>Categoria</th>
                 <td>
                   {event.categoria ? (

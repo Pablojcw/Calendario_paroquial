@@ -5,8 +5,11 @@ const { Pool } = pg;
 
 pg.types.setTypeParser(1082, (value: string) => value);
 
+const isSsl = env.DATABASE_URL.includes('neon.tech') || env.DATABASE_URL.includes('sslmode=require');
+
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
+  ssl: isSsl ? { rejectUnauthorized: false } : undefined,
   max: 10,
   idleTimeoutMillis: 30_000,
 });

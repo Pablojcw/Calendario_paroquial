@@ -7,7 +7,7 @@ import { Spinner } from '../../components/Spinner.js';
 import { filterDefaults } from '../../lib/filters.js';
 import { WEEKDAY_LONG } from '../../lib/date.js';
 import type { FormEvent } from 'react';
-import type { EventDTO, EventInput, Recorrencia, Status, Visibilidade } from '../../api/types.js';
+import type { EventDTO, EventInput, Recorrencia, Status } from '../../api/types.js';
 
 type FormState = {
   titulo: string;
@@ -24,7 +24,6 @@ type FormState = {
   diaMes: string;
   semanaMes: string;
   status: Status;
-  visibilidade: Visibilidade;
 };
 
 const emptyForm: FormState = {
@@ -42,7 +41,6 @@ const emptyForm: FormState = {
   diaMes: '1',
   semanaMes: '',
   status: 'confirmado',
-  visibilidade: 'publico',
 };
 
 function fromDto(event: EventDTO): FormState {
@@ -61,7 +59,6 @@ function fromDto(event: EventDTO): FormState {
     diaMes: event.diaMes !== null ? String(event.diaMes) : '1',
     semanaMes: event.semanaMes !== null ? String(event.semanaMes) : '',
     status: event.status,
-    visibilidade: event.visibilidade,
   };
 }
 
@@ -85,7 +82,7 @@ function toInput(form: FormState): EventInput {
     diaMes: form.recorrencia === 'mensal' && !form.semanaMes ? num(form.diaMes) : null,
     semanaMes: form.recorrencia === 'mensal' && form.semanaMes ? num(form.semanaMes) : null,
     status: form.status,
-    visibilidade: form.visibilidade,
+    visibilidade: 'publico',
   };
 }
 
@@ -292,21 +289,12 @@ export function EventFormPage() {
           )}
         </div>
 
-        <div className="form-grid">
-          <div className="field">
-            <label htmlFor="status">Status</label>
-            <select id="status" value={form.status} onChange={(e) => setField('status', e.target.value)}>
-              <option value="confirmado">Confirmado</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
-          </div>
-          <div className="field">
-            <label htmlFor="visibilidade">Visibilidade</label>
-            <select id="visibilidade" value={form.visibilidade} onChange={(e) => setField('visibilidade', e.target.value)}>
-              <option value="publico">Público (aparece no site)</option>
-              <option value="interno">Interno (só para a equipe)</option>
-            </select>
-          </div>
+        <div className="field" style={{ maxWidth: '280px' }}>
+          <label htmlFor="status">Status</label>
+          <select id="status" value={form.status} onChange={(e) => setField('status', e.target.value)}>
+            <option value="confirmado">Confirmado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
         </div>
 
         <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.4rem' }}>

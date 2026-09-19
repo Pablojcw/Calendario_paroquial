@@ -1,228 +1,182 @@
-# Calendário Paroquial Digital
-
-Sistema para publicação do calendário de atividades da **Paróquia Nossa Senhora de Fátima e São Francisco de Paula**.
-
-- **Público:** a comunidade acompanha as celebrações, reuniões e eventos da paróquia em um calendário online.
-- **Administrativo:** a secretaria paroquial cadastra e gerencia eventos, com recorrências (diária, semanal, mensal), séries, categorias, comunidades e avisos.
-
-O projeto é um monorepo com dois pacotes — **API** (Fastify + PostgreSQL) e **Web** (React + Vite) — gerenciados com npm workspaces.
+# Paróquia Nossa Senhora de Fátima e São Francisco de Paula
+### Sistema do Calendário Paroquial Digital & Portal Institucional
+> **Presidente Venceslau - SP | Diocese de Presidente Prudente | Fundada em 1931**
 
 ---
 
-## Estrutura do projeto
+## 📖 Sobre o Projeto
+
+O **Calendário Paroquial Digital** é o portal oficial da **Paróquia Nossa Senhora de Fátima e São Francisco de Paula**. Desenvolvido com foco em modernidade, experiência de uso intuitiva em dispositivos móveis e fidelidade estrita à **Agenda Pastoral 2026**, o sistema permite que toda a comunidade católica acompanhe com clareza as missas, celebrações sacramentais, encontros pastorais e solenidades diocesanas.
+
+O projeto foi estruturado como um monorepo modular e robusto, projetado para suportar futuras agendas anuais (como o calendário de **2027**) de forma ágil e automatizada.
+
+---
+
+## 🎨 Identidade Visual & UX
+
+A interface pública e administrativa reflete as cores oficiais da paróquia e sua história:
+- **Azul Escuro Real (`#2d4796`)**: Cor primária litúrgica e institucional.
+- **Azul Claro Céu (`#4ab5ef`)**: Cor secundária mariana para destaques suaves e interações.
+- **Amarelo Ouro Solar (`#fdf70b`)**: Destaque vibrante para datas ativas e elementos nobres.
+- **Brasão Oficial de 1931**: Integrado ao cabeçalho da aplicação web.
+- **Design 100% Responsivo**: Grade proporcional de calendário para smartphones com células proporcionais e badges arredondados com indicador pontilhado.
+
+---
+
+## ⛪ Estrutura de Páginas Públicas
+
+1. **Calendário Geral (`/`)**: Calendário mensal interativo com indicação de solenidades litúrgicas e celebrações diárias com filtros por comunidade e categoria.
+2. **Próximos Eventos (`/proximos`)**: Visão em linha do tempo dos próximos 60 dias da paróquia.
+3. **Grade de Missas (`/missas`)**: Horários fixos e móveis na Igreja Matriz e nas 12 capelas, incluindo Missa de Cura e Libertação (último domingo às 19h), Missa Votiva (todo dia 13 às 15h) e Novena de Santa Teresinha (todo dia 9 às 16h).
+4. **Conheça Nossas Capelas (`/capelas`)**: Catálogo fotográfico com as fotos reais de cada comunidade, bairro, endereço completo e botão para traçar rota direta no Google Maps.
+5. **Atividades Pastorais (`/atividades`)**: Guia de atividades semanais e mensais (Terço dos Homens, Mães Orantes, Cenáculos, MECE's, Infância Missionária) e as datas oficiais das reuniões do CPP 2026.
+6. **Catequese & Sacramentos (`/sacramentos`)**: Informações e calendários anuais de Batismo (Capela do Carmo), Matrimônio (Legitimações e Casamento Comunitário) e o cronograma dos 15 Acampamentos de 2026.
+7. **A Paróquia (`/institucional`)**: Palavra do Pároco, horários de direção espiritual/confissões, expediente da secretaria e contatos.
+8. **Área Restrita (`/admin`)**: Painel administrativo simplificado para a equipe paroquial gerenciar avisos, sequências de novenas/tríduos e novos eventos.
+
+---
+
+## 📊 Dados & Categorias Oficiais
+
+A base de dados é populada com **1.147 eventos reais** transcritos da Agenda Pastoral impressa. Todos os eventos são **públicos** e categorizados em 9 categorias oficiais:
+
+| Categoria | Cor Oficial | Finalidade |
+| :--- | :--- | :--- |
+| **Missa** | `#1d4ed8` | Missas semanais, dominicais, votivas e solenes |
+| **Celebração da Palavra** | `#0284c7` | Celebrações conduzidas por ministros nas capelas |
+| **Devoções e Oração** | `#7c3aed` | Terços, adorações, cenáculos e grupos de oração |
+| **Novenas e Tríduos** | `#be185d` | Sequências devocionais em honra aos padroeiros |
+| **Catequese e Formação** | `#059669` | Encontros catequéticos e formação de lideranças |
+| **Acampamentos e Retiros** | `#d97706` | Acampamentos de jovens, casais e retiros espirituais |
+| **Sacramentos e Bênçãos** | `#9333ea` | Celebrações do Batismo, Crisma, Matrimônio e Bênçãos |
+| **Eventos Sociais e Festas** | `#ea580c` | Quermesses, almoços comunitários e festas dos padroeiros |
+| **Reuniões e Clero** | `#475569` | Reuniões do CPP, conselhos e clero diocesano |
+
+---
+
+## 🛠️ Arquitetura Tecnológica
+
+O projeto é um **monorepo** com TypeScript ponta a ponta:
 
 ```
-paroquia-web/
-├── backend/                # API REST (Fastify + TypeScript)
+Calendario_paroquial/
+├── backend/                       # API REST Fastify 5
 │   ├── src/
-│   │   ├── modules/        # auth, events, categories, communities, institution, sequences, changelog
-│   │   ├── config/         # env, banco de dados, plugins
-│   │   └── server.ts       # entrada da aplicação
-│   ├── scripts/            # setup-db, seed, import-csv (importa agenda em CSV)
-│   ├── sql/schema.sql      # schema completo do banco
-│   ├── tests/              # testes da API
-│   ├── .env.example        # modelo de configuração
-│   └── package.json
-├── frontend/               # SPA (React + Vite + TypeScript)
+│   │   ├── modules/events/        # DTO, repositórios públicos/admin, schemas Zod
+│   │   ├── modules/auth/          # Autenticação JWT e segurança
+│   │   ├── modules/categories/    # Gestão das categorias
+│   │   ├── modules/communities/   # Gestão das 12 capelas e Matriz
+│   │   ├── modules/institution/   # Informações institucionais
+│   │   ├── modules/sequences/     # Gerador de novenas e tríduos
+│   │   ├── modules/changelog/     # Histórico de auditoria de alterações
+│   │   ├── db/                    # Pool PostgreSQL (suporte local e Neon SSL)
+│   │   └── server.ts              # Ponto de entrada Fastify
+│   ├── scripts/
+│   │   ├── agenda-2026.csv        # 1.147 eventos oficiais catalogados
+│   │   ├── import-csv.ts          # Ingestão modular por ano (ex: 2026, 2027)
+│   │   └── sync-neon.ts           # Sincronização automatizada com Neon Cloud
+│   └── sql/schema.sql             # Definição DDL relacional em PostgreSQL
+├── frontend/                      # SPA React 18 + Vite 6
 │   ├── src/
-│   │   ├── components/     # MonthCalendar, OccurrenceList, etc.
-│   │   ├── pages/          # CalendarPage, LogarPage, Dashboard, Administracao, etc.
-│   │   ├── lib/            # api client, datas
-│   │   ├── styles/         # global.css
-│   │   └── main.tsx
-│   └── package.json
-├── docker-compose.yml      # sobe o PostgreSQL (opcional)
-├── package.json            # workspaces + scripts raiz
-└── README.md
+│   │   ├── components/            # MonthCalendar, OccurrenceList, PublicLayout, AdminLayout
+│   │   ├── pages/                 # Páginas temáticas (Calendar, Chapels, Mass, etc.)
+│   │   ├── lib/liturgy.ts         # Registro litúrgico modular por ano (2026, 2027...)
+│   │   └── styles/global.css      # Sistema de design tokens oficial da paróquia
+│   └── public/images/capelas/     # Fotos reais das 12 capelas e da Matriz
 ```
 
 ---
 
-## Requisitos
+## 🚀 Como Executar Localmente
 
-- **Node.js** ≥ 20
-- **PostgreSQL** ≥ 14 (local, ou via `docker-compose.yml`)
-- npm (vem com o Node)
+### Pré-requisitos
+- **Node.js** ≥ 20.x
+- **npm** ≥ 10.x
 
----
-
-## Como rodar localmente
-
-### 1. Configure o banco de dados
-
-**Opção A — PostgreSQL via Docker (recomendado):**
-
+### 1. Clonar e Instalar Dependências
 ```bash
-docker compose up -d
+git clone https://github.com/wallace-pv/Calendario_paroquial.git
+cd Calendario_paroquial
+npm install
 ```
 
-Cria o banco `paroquia`, usuário `postgres`, senha `postgres`, na porta `5432`.
-
-**Opção B — PostgreSQL já instalado:**
-
-Crie um banco chamado `paroquia` e um usuário com acesso a ele. Ajuste a `DATABASE_URL` no `backend/.env` de acordo.
-
-### 2. Configure o ambiente
-
+### 2. Configurar o Ambiente Backend
+Copie o modelo de variáveis de ambiente:
 ```bash
 cp backend/.env.example backend/.env
 ```
 
-Edite o `backend/.env`:
-
-- `DATABASE_URL` — conexão com o PostgreSQL (senha padrão do Docker: `postgres`).
-- `JWT_SECRET` — gere um secret longo: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
-- `CORS_ORIGIN` — URL do frontend (`http://localhost:5173` no desenvolvimento).
-- `PORT` — porta da API (ex.: `3002`).
-
-### 3. Instale as dependências e prepare o banco
-
-```bash
-npm install          # instala workspaces (backend + frontend)
-npm run db:setup     # aplica backend/sql/schema.sql (cria o banco se precisar)
-npm run db:seed      # cria categoria/administrador padrão + dados iniciais
+Edite o arquivo `backend/.env` com a sua string de conexão com o PostgreSQL (local ou Neon) e as chaves de segurança:
+```env
+DATABASE_URL=postgresql://usuario:senha@host:5432/paroquia?sslmode=require
+JWT_SECRET=gere_uma_chave_secreta_longa_e_aleatoria
+PORT=3002
+CORS_ORIGIN=http://localhost:5173
+AUTH_REGISTER_OPEN=false
+BOOTSTRAP_ADMIN_NOME=Administrador Paroquial
+BOOTSTRAP_ADMIN_EMAIL=admin@paroquia.local
+BOOTSTRAP_ADMIN_SENHA=sua_senha_segura
 ```
 
-> `npm run db:seed` usa as variáveis `BOOTSTRAP_ADMIN_*` do `.env` para criar o primeiro administrador.
+> **Aviso de Segurança**: O arquivo `.env` está estritamente protegido no `.gitignore` e **nunca** deve ser versionado no GitHub.
 
-### 4. Importe a agenda do ano (opcional)
-
-Os dados já vêm da importação inicial, mas para (re)importar completo:
-
+### 3. Sincronizar o Banco e Ingerir os 1.147 Eventos
 ```bash
-npm run db:import -- backend/scripts/agenda-2026.csv
+# Executa a criação do schema e a ingestão oficial
+npm run db:sync --workspace=@paroquia/backend
 ```
 
-O importador também aceita um CSV próprio: veja `backend/scripts/import-exemplo.csv`.
-
-### 5. Suba a aplicação
-
+### 4. Iniciar os Servidores em Desenvolvimento
+Na raiz do monorepo, execute:
 ```bash
+# Inicia a API (porta 3002) e o Frontend (porta 5173) simultaneamente:
 npm run dev
 ```
 
-- **Web:** http://localhost:5173
-- **API:** http://localhost:3002
-
-### Login administrativo
-
-Use o e-mail e a senha do administrador criado no seed (veja `BOOTSTRAP_ADMIN_*` no `.env`).
-
-Em **produção**, desligue o registro aberto: `AUTH_REGISTER_OPEN=false`.
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **API**: [http://localhost:3002](http://localhost:3002)
+- **API de Eventos**: [http://localhost:3002/api/events/public?from=2026-01-01&to=2026-12-31](http://localhost:3002/api/events/public?from=2026-01-01&to=2026-12-31)
 
 ---
 
-## Scripts principais
+## 🗓️ Como Adicionar o Calendário de 2027
 
-| Comando                    | Descrição                                        |
-| -------------------------- | ------------------------------------------------ |
-| `npm run dev`              | Sobe backend e frontend juntos (dev com reload)  |
-| `npm run dev:backend`      | Sobe apenas a API                                |
-| `npm run dev:frontend`     | Sobe apenas o frontend                           |
-| `npm run build`            | Compila backend e frontend para produção         |
-| `npm run typecheck`        | Checagem de tipos (backend + frontend)           |
-| `npm run lint`             | ESLint nos dois pacotes                          |
-| `npm run test`             | Testes (backend)                                 |
-| `npm run db:setup`         | Aplica o schema no banco                         |
-| `npm run db:seed`          | Dados iniciais + primeiro administrador          |
-| `npm run db:import -- <csv>` | Importa eventos a partir de um CSV             |
-| `npm run format`           | Formata o código com Prettier                    |
+O sistema já está totalmente preparado para receber a agenda de 2027:
+
+1. **Ingestão dos Eventos**:
+   - Adicione o arquivo `backend/scripts/agenda-2027.csv` seguindo o formato padrão.
+   - Execute o comando modular informando o ano:
+     ```bash
+     npm run db:import 2027 --workspace=@paroquia/backend
+     ```
+2. **Datas Litúrgicas**:
+   - No frontend, abra [`frontend/src/lib/liturgy.ts`](frontend/src/lib/liturgy.ts) e registre o dicionário de celebrações da diocese para 2027 em `LITURGICAL_CALENDARS[2027]` ou utilize `registerLiturgicalYear(2027, { ... })`.
+   - Nenhuma alteração nos componentes visuais de calendário é necessária.
 
 ---
 
-## API — visão geral
+## 🔒 Segurança e Credenciais
 
-A API fica em `/api` e usa JWT (Bearer token) nas rotas administrativas. As rotas públicas de eventos não exigem login.
-
-### Rotas públicas
-
-| Método | Rota                          | Descrição                               |
-| ------ | ----------------------------- | --------------------------------------- |
-| GET    | `/api/events/public`          | Ocorrências num intervalo: `from`/`to` (YYYY-MM-DD). Filtros opcionais: `categoria`/`comunidade` (id ou nome) |
-| GET    | `/api/events/public/proximos` | Próximas ocorrências: `limit` (padrão 5) |
-| GET    | `/api/events/public/:id`      | Detalhe de uma ocorrência pública        |
-| GET    | `/api/categories`             | Lista de categorias                      |
-| GET    | `/api/communities`            | Lista de comunidades                     |
-| GET    | `/api/institution`            | Informações institucionais               |
-
-### Rotas administrativas (autenticadas)
-
-| Método | Rota                              | Descrição                  |
-| ------ | --------------------------------- | -------------------------- |
-| POST   | `/api/auth/register`              | Criar usuário (bootstrap — ligue/desligue via `AUTH_REGISTER_OPEN`) |
-| POST   | `/api/auth/login`                 | Autenticar e obter token   |
-| GET    | `/api/auth/me`                    | Dados do usuário logado    |
-| GET    | `/api/events`                     | Lista todos os eventos (com recorrências) |
-| GET    | `/api/events/:id`                 | Evento + ocorrências       |
-| POST   | `/api/events`                     | Criar evento               |
-| PUT    | `/api/events/:id`                 | Atualizar evento           |
-| DELETE | `/api/events/:id`                 | Excluir evento             |
-| POST   | `/api/events/:id/cancel`          | Cancelar evento            |
-| POST   | `/api/events/:id/reinstate`       | Reativar evento cancelado  |
-| POST   | `/api/events/:id/duplicate`       | Duplicar evento            |
-| POST   | `/api/events/:id/import`          | Importar dados de um dia   |
-| GET    | `/api/events/:id/history`         | Histórico de alterações    |
-| POST/PUT/DELETE | `/api/categories[/:id]`   | CRUD de categorias         |
-| POST/PUT/DELETE | `/api/communities[/:id]` | CRUD de comunidades        |
-| PUT    | `/api/institution`                | Atualizar informações institucionais |
-| POST   | `/api/sequences`                  | Criar sequência de eventos |
-| GET    | `/api/changelog`                  | Registro de alterações     |
+- As senhas dos administradores são cifradas com algoritmo **bcrypt** com fator de custo 12.
+- A comunicação com o banco em nuvem requer conexão segura **TLS/SSL**.
+- As rotas administrativas exigem token **JWT** Bearer no cabeçalho `Authorization`.
+- Todos os segredos e dados sensíveis ficam isolados em variáveis de ambiente protegidas fora do controle de versão.
 
 ---
 
-## Importação de agenda (formato CSV)
+## 📦 Scripts Disponíveis no Monorepo
 
-Primeira linha = cabeçalho. Colunas:
-
-```
-titulo,categoria,comunidade,data,hora,responsavel,descricao,visibilidade,
-recorrencia,dia_semana,dia_mes,semana_mes,data_fim,local,serie
-```
-
-- `data` — `YYYY-MM-DD` (usada como data-base de recorrências).
-- `recorrencia` — `unica | diaria | semanal | mensal`.
-- `dia_semana` — `0` (domingo) a `6` (sábado), ou nome (ex.: `terça-feira`, `sábado`).
-- `dia_mes`/`semana_mes` — usados na recorrência mensal.
-- `data_fim` — fim da recorrência (vazio se não se repete/fim indeterminado).
-- `visibilidade` — `publica | interna`.
-- `serie` — nomenclatura da sequência cronológica (agrupa eventos que se repetem ao longo do ano mantendo a ordem); vazio se o evento é independente.
-
-A importação é **atômica** (ou tudo entra, ou nada) e cria categorias/comunidades automaticamente quando ainda não existem.
-
-Veja `backend/scripts/import-exemplo.csv` e `backend/scripts/agenda-2026.csv` (agenda real do ano).
+| Comando | Descrição |
+| :--- | :--- |
+| `npm run dev` | Inicia backend e frontend em modo desenvolvimento com live-reload |
+| `npm run build` | Compila o backend e gera o bundle de produção otimizado do frontend |
+| `npm run typecheck` | Executa a validação estrita de tipos TypeScript nos dois pacotes |
+| `npm run lint` | Analisa a conformidade do código via ESLint |
+| `npm run db:import [ano]` | Executa o script de ingestão modular de eventos em CSV |
+| `npm run db:sync` | Sincroniza schemas, comunidades e categorias com a nuvem |
 
 ---
 
-## Configuração (variáveis de ambiente)
+## 📜 Licença
 
-| Variável               | Padrão                        | Descrição                                      |
-| ---------------------- | ----------------------------- | ---------------------------------------------- |
-| `DATABASE_URL`         | `postgres://postgres:postgres@localhost:5432/paroquia` | Conexão com o PostgreSQL |
-| `JWT_SECRET`           | —                             | Segredo para assinar os tokens (obrigatório)   |
-| `NODE_ENV`             | `development`                 | Ambiente (`development`/`test`/`production`)   |
-| `PORT`                 | `3000`                        | Porta da API                                   |
-| `CORS_ORIGIN`          | `http://localhost:5173`       | Origens permitidas no CORS (separadas por vírgula) |
-| `AUTH_REGISTER_OPEN`   | `false`                       | Permite criar administrador via `/register` (bootstrap) |
-| `BOOTSTRAP_ADMIN_NOME` | `Administrador`               | Nome do admin padrão (seed)                    |
-| `BOOTSTRAP_ADMIN_EMAIL`| `admin@paroquia.local`        | E-mail do admin padrão (seed)                  |
-| `BOOTSTRAP_ADMIN_SENHA`| `trocar-senha-123`            | Senha do admin padrão (seed) — **troque em produção** |
-
-> Nunca versione o `.env` real. Use `.env.example` como modelo.
-
----
-
-## Tecnologias
-
-| Camada    | Stack                                                        |
-| --------- | ------------------------------------------------------------ |
-| Backend   | Fastify 5, TypeScript, PostgreSQL (pg), JWT, Zod             |
-| Frontend  | React 18, Vite 6, TypeScript, React Router, React Query, TanStack Query |
-| Ferramentas | ESLint, Prettier, Vitest (backend), npm workspaces        |
-
----
-
-## Produção
-
-1. `NODE_ENV=production`, `AUTH_REGISTER_OPEN=false`, `JWT_SECRET` forte e `DATABASE_URL` apontando para o banco de produção.
-2. Compile: `npm run build`.
-3. Suba a API: `npm start` (dentro de `backend/`) ou sirva o build do frontend em qualquer host estático apontando o proxy `/api` para a API.
+Desenvolvido para a **Paróquia Nossa Senhora de Fátima e São Francisco de Paula** de Presidente Venceslau - SP. Todos os direitos reservados.

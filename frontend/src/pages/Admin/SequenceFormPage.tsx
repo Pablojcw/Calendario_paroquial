@@ -5,8 +5,6 @@ import { api } from '../../api/endpoints.js';
 import { ApiError } from '../../api/client.js';
 import { filterDefaults } from '../../lib/filters.js';
 import type { FormEvent } from 'react';
-import type { Visibilidade } from '../../api/types.js';
-
 type SequenceFormState = {
   titulo: string;
   descricao: string;
@@ -18,7 +16,6 @@ type SequenceFormState = {
   hora: string;
   intervaloDias: string;
   dias: string;
-  visibilidade: Visibilidade;
 };
 
 const initial: SequenceFormState = {
@@ -32,7 +29,6 @@ const initial: SequenceFormState = {
   hora: '',
   intervaloDias: '1',
   dias: '9',
-  visibilidade: 'publico',
 };
 
 export function SequenceFormPage() {
@@ -75,7 +71,7 @@ export function SequenceFormPage() {
         hora: form.hora || null,
         intervaloDias,
         dias,
-        visibilidade: form.visibilidade,
+        visibilidade: 'publico',
       });
       void queryClient.invalidateQueries({ queryKey: ['admin-events'] });
       void queryClient.invalidateQueries({ queryKey: ['public-events'] });
@@ -164,14 +160,6 @@ export function SequenceFormPage() {
         <div className="field">
           <label htmlFor="descricao">Descrição (vale para todos os encontros)</label>
           <textarea id="descricao" rows={3} value={form.descricao} onChange={(e) => set('descricao', e.target.value)} />
-        </div>
-
-        <div className="field">
-          <label htmlFor="visibilidade">Visibilidade</label>
-          <select id="visibilidade" value={form.visibilidade} onChange={(e) => set('visibilidade', e.target.value)}>
-            <option value="publico">Público (aparece no site)</option>
-            <option value="interno">Interno (só para a equipe)</option>
-          </select>
         </div>
 
         <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.4rem' }}>

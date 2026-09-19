@@ -120,25 +120,30 @@ export async function buildPublicOccurrences(input: PublicRangeInput): Promise<P
   }
 
   const parentIds = [...new Set(rows.map((r) => r.evento_pai_id).filter((id): id is string => id !== null))];
-  const parents = await getEventsByIds(parentIds);
+  const parents = parentIds.length > 0 ? await getEventsByIds(parentIds) : [];
   const parentById = new Map(parents.map((p) => [p.id, p]));
 
-  const serieByChild = await buildSerieMap(parentIds);
+  const serieByChild = parentIds.length > 0 ? await buildSerieMap(parentIds) : new Map<string, SerieInfo>();
 
   const result: PublicOccurrence[] = [];
   for (const row of rows) {
-    const dates = occurrencesBetween(
-      {
-        recorrencia: row.recorrencia,
-        dataInicio: row.data_inicio,
-        dataFim: row.data_fim,
-        diaSemana: row.dia_semana,
-        diaMes: row.dia_mes,
-        semanaMes: row.semana_mes,
-      },
-      input.from,
-      input.to,
-    );
+    let dates: string[];
+    if (row.recorrencia === 'nenhuma') {
+      dates = (row.data_inicio >= input.from && row.data_inicio <= input.to) ? [row.data_inicio] : [];
+    } else {
+      dates = occurrencesBetween(
+        {
+          recorrencia: row.recorrencia,
+          dataInicio: row.data_inicio,
+          dataFim: row.data_fim,
+          diaSemana: row.dia_semana,
+          diaMes: row.dia_mes,
+          semanaMes: row.semana_mes,
+        },
+        input.from,
+        input.to,
+      );
+    }
 
     const cancelled = cancelledByEvent.get(row.id);
     for (const data of dates) {

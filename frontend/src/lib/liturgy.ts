@@ -132,6 +132,18 @@ const LITURGICAL_CALENDAR_2026: Record<string, string> = {
   '2026-12-27': 'Sagrada Família',
 };
 
+export type LiturgicalCalendarYear = Record<string, string>;
+
+export const LITURGICAL_CALENDARS: Record<number, LiturgicalCalendarYear> = {
+  2026: LITURGICAL_CALENDAR_2026,
+  // 2027: Pronto para receber o calendário diocesano de 2027
+};
+
+export function registerLiturgicalYear(year: number, feasts: LiturgicalCalendarYear): void {
+  LITURGICAL_CALENDARS[year] = { ...(LITURGICAL_CALENDARS[year] ?? {}), ...feasts };
+}
+
 export function getLiturgicalFeast(iso: string): string | null {
-  return LITURGICAL_CALENDAR_2026[iso] ?? null;
+  const year = parseInt(iso.slice(0, 4), 10);
+  return LITURGICAL_CALENDARS[year]?.[iso] ?? null;
 }

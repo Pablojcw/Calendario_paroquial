@@ -17,7 +17,7 @@ export async function queryEventsPublic(input: PublicRangeInput): Promise<{ rows
     return `$${params.length}`;
   };
 
-  conditions.push(`e.visibilidade = ${push('publico')}`);
+  conditions.push(`(e.visibilidade IS NULL OR e.visibilidade = 'publico')`);
   conditions.push(`e.status = ${push('confirmado')}`);
   conditions.push(`e.data_inicio <= ${push(input.to)}`);
   conditions.push(`COALESCE(e.data_fim, e.data_inicio) >= ${push(input.from)}`);

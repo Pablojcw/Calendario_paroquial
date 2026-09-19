@@ -7,7 +7,11 @@ import bcrypt from 'bcryptjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const schemaPath = path.resolve(here, '../sql/schema.sql');
-const csvPath = path.resolve(here, 'agenda-2026.csv');
+const targetArg = process.argv[2];
+const csvFilename = targetArg && /^\d{4}$/.test(targetArg)
+  ? `agenda-${targetArg}.csv`
+  : (targetArg || 'agenda-2026.csv');
+const csvPath = path.isAbsolute(csvFilename) ? csvFilename : path.resolve(here, csvFilename);
 
 const NEON_URL =
   process.env.NEON_DATABASE_URL ||
@@ -188,7 +192,7 @@ async function run() {
     console.log('\n👤 Garantindo usuário administrador...');
     const adminEmail = process.env.BOOTSTRAP_ADMIN_EMAIL || 'admin@paroquia.local';
     const adminNome = process.env.BOOTSTRAP_ADMIN_NOME || 'Administrador';
-    const adminSenha = process.env.BOOTSTRAP_ADMIN_SENHA || 'trocar-senha-123';
+    const adminSenha = process.env.BOOTSTRAP_ADMIN_SENHA || 'Paroquia#Admin2026!';
     const { rows: adminRows } = await client.query('SELECT id FROM users WHERE email = $1', [adminEmail]);
     if (adminRows.length === 0) {
       const senhaHash = await bcrypt.hash(adminSenha, 12);

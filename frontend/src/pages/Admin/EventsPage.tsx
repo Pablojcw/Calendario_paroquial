@@ -5,13 +5,12 @@ import { api } from '../../api/endpoints.js';
 import { Spinner } from '../../components/Spinner.js';
 import { filterDefaults } from '../../lib/filters.js';
 import { formatBR, recorrenciaLabel, todayISO } from '../../lib/date.js';
-import type { EventDTO, Status, Visibilidade } from '../../api/types.js';
+import type { EventDTO, Status } from '../../api/types.js';
 
 export function EventsPage() {
   const queryClient = useQueryClient();
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<'' | Status>('');
-  const [visibilidade, setVisibilidade] = useState<'' | Visibilidade>('');
   const [categoriaId, setCategoriaId] = useState('');
   const [comunidadeId, setComunidadeId] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -19,12 +18,11 @@ export function EventsPage() {
   const { categories, communities } = filterDefaults.useQueries();
 
   const query = useQuery({
-    queryKey: ['admin-events', { q, status, visibilidade, categoriaId, comunidadeId }],
+    queryKey: ['admin-events', { q, status, categoriaId, comunidadeId }],
     queryFn: () =>
       api.listEvents({
         q: q || undefined,
         status: status || undefined,
-        visibilidade: visibilidade || undefined,
         categoriaId: categoriaId || undefined,
         comunidadeId: comunidadeId || undefined,
       }),
@@ -74,18 +72,6 @@ export function EventsPage() {
             <option value="">Todos</option>
             <option value="confirmado">Confirmado</option>
             <option value="cancelado">Cancelado</option>
-          </select>
-        </div>
-        <div className="field">
-          <label htmlFor="visibilidade">Visibilidade</label>
-          <select
-            id="visibilidade"
-            value={visibilidade}
-            onChange={(e) => setVisibilidade(e.target.value as Visibilidade | '')}
-          >
-            <option value="">Todas</option>
-            <option value="publico">Público</option>
-            <option value="interno">Interno</option>
           </select>
         </div>
         <div className="field">
@@ -172,9 +158,6 @@ export function EventsPage() {
                     <span className={`badge ${event.status === 'confirmado' ? 'badge--ok' : 'badge--danger'}`}>
                       {event.status === 'confirmado' ? 'Confirmado' : 'Cancelado'}
                     </span>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>
-                      {event.visibilidade === 'publico' ? 'Público' : 'Interno'}
-                    </div>
                   </td>
                   <td>
                     <Link className="btn btn--sm" to={`/admin/eventos/novo?clone=${event.id}`}>

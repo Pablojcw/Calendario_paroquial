@@ -180,17 +180,23 @@ async function insertEvent(client: pg.PoolClient, row: Row, eventoPaiId: string 
       recorrencia,
       parseDiaSemana(row.dia_semana),
       row.dia_mes ? Number(row.dia_mes) : null,
-      row.semana_mes ? Number(row.semana_mes) : null,
-      row.visibilidade?.trim().toLowerCase() === 'interno' ? 'interno' : 'publico',
+      'publico',
       eventoPaiId,
     ],
   );
 }
 
+function resolveCsvPath(arg: string | undefined): string {
+  if (!arg) return 'scripts/agenda-2026.csv';
+  if (/^\d{4}$/.test(arg)) return `scripts/agenda-${arg}.csv`;
+  return arg;
+}
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const clean = process.argv.includes('--clean');
-  const caminho = args[0] ?? 'scripts/agenda-2026.csv';
+  const caminho = resolveCsvPath(args[0]);
+  console.log(`Carregando arquivo CSV: ${caminho}`);
   const text = readFileSync(caminho, 'utf8');
   const rows = parseCSV(text);
   if (rows.length === 0) {
