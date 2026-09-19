@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "db:setup": "tsx scripts/setup-db.ts",
     "db:seed": "tsx scripts/seed.ts",
-    "db:import": "tsx scripts/import-csv.ts"
+    "db:import": "tsx scripts/import-csv.ts",
+    "db:sync": "tsx scripts/sync-neon.ts"
   },
   "engines": {
     "node": ">=20"
