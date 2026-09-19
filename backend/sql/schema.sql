@@ -60,18 +60,16 @@ CREATE TABLE IF NOT EXISTS categories (
 
 INSERT INTO categories (nome, cor, ordem)
 VALUES
-  ('Missa', '#4f46e5', 10),
-  ('Atividade Pastoral / Grupo de Oração', '#0d9488', 20),
-  ('Catequese', '#db2777', 30),
-  ('Batismo', '#7c3aed', 40),
-  ('Matrimônio / Casamento', '#c2410c', 50),
-  ('Novena', '#e11d48', 60),
-  ('Tríduo', '#be123c', 70),
-  ('Festa / Celebração Especial', '#ca8a04', 80),
-  ('Acampamento / Retiro', '#059669', 90),
-  ('Reunião Administrativa', '#64748b', 100),
-  ('Ação Social', '#16a34a', 110)
-ON CONFLICT (nome) DO NOTHING;
+  ('Missa', '#1d4ed8', 10),
+  ('Celebração da Palavra', '#0284c7', 20),
+  ('Devoções e Oração', '#7c3aed', 30),
+  ('Novenas e Tríduos', '#be185d', 40),
+  ('Catequese e Formação', '#059669', 50),
+  ('Acampamentos e Retiros', '#d97706', 60),
+  ('Sacramentos e Bênçãos', '#9333ea', 70),
+  ('Eventos Sociais e Festas', '#ea580c', 80),
+  ('Reuniões e Clero', '#475569', 90)
+ON CONFLICT (nome) DO UPDATE SET cor = EXCLUDED.cor, ordem = EXCLUDED.ordem;
 
 -- ------------------------------------------------------------------
 -- Usuários (administração da paróquia)

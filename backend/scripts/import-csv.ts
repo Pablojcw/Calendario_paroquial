@@ -188,7 +188,9 @@ async function insertEvent(client: pg.PoolClient, row: Row, eventoPaiId: string 
 }
 
 async function main(): Promise<void> {
-  const caminho = process.argv[2] ?? 'scripts/import-agenda.csv';
+  const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+  const clean = process.argv.includes('--clean');
+  const caminho = args[0] ?? 'scripts/agenda-2026.csv';
   const text = readFileSync(caminho, 'utf8');
   const rows = parseCSV(text);
   if (rows.length === 0) {
@@ -203,6 +205,11 @@ async function main(): Promise<void> {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+
+    if (clean) {
+      await client.query('TRUNCATE events, event_occurrence_cancellations CASCADE');
+      console.log('Tabela events truncada para importação limpa.');
+    }
 
     for (const row of rows) {
       const serie = row.serie?.trim();

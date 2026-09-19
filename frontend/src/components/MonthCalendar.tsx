@@ -47,13 +47,18 @@ export function MonthCalendar({ monthISO, occurrences, selectedISO, onSelectDay 
 
         {grid.map((iso) => {
           const day = byDate.get(iso) ?? [];
-          const classes = ['calendar-day'];
-          if (parseISO(iso).getMonth() !== monthAnchor) classes.push('calendar-day--other');
-          if (iso === todayIso) classes.push('calendar-day--today');
-          if (iso === selectedISO) classes.push('calendar-day--selected');
+          const isOtherMonth = parseISO(iso).getMonth() !== monthAnchor;
+          const isToday = iso === todayIso;
+          const isSelected = iso === selectedISO;
 
-          const visible = day.slice(0, 2);
-          const restCount = day.length - visible.length;
+          const classes = ['calendar-day'];
+          if (isOtherMonth) classes.push('calendar-day--other');
+          if (isToday) classes.push('calendar-day--today');
+          if (isSelected) classes.push('calendar-day--selected');
+
+          const visible = isOtherMonth ? [] : day.slice(0, 2);
+          const restCount = isOtherMonth ? 0 : Math.max(0, day.length - visible.length);
+          const dots = isOtherMonth ? [] : day.slice(0, 3);
 
           return (
             <button
@@ -61,21 +66,45 @@ export function MonthCalendar({ monthISO, occurrences, selectedISO, onSelectDay 
               key={iso}
               className={classes.join(' ')}
               onClick={() => onSelectDay(iso)}
-              aria-label={`${day.length} evento(s) em ${iso}`}
+              aria-label={`${isOtherMonth ? 'Outro mês' : `${day.length} evento(s)`} em ${iso}`}
             >
               <span className="calendar-day__num">{Number(iso.slice(8))}</span>
-              {visible.map((occ) => (
-                <span
-                  key={occ.ocorrenciaId}
-                  className="event-chip"
-                  style={{ background: occ.categoria?.cor ?? DEFAULT_COLOR }}
-                  title={occ.titulo}
-                >
-                  <strong>{humanTime(occ.hora)}{humanTime(occ.hora) ? ' · ' : ''}</strong>
-                  {occ.titulo}
-                </span>
-              ))}
-              {restCount > 0 && <span className="calendar-day__holy">+{restCount} mais</span>}
+
+              {/* Visualização Desktop: chips com hora e título */}
+              {!isOtherMonth && day.length > 0 && (
+                <div className="calendar-day__events-desktop">
+                  {visible.map((occ) => (
+                    <span
+                      key={occ.ocorrenciaId}
+                      className="event-chip"
+                      style={{ background: occ.categoria?.cor ?? DEFAULT_COLOR }}
+                      title={occ.titulo}
+                    >
+                      <strong>{humanTime(occ.hora)}{humanTime(occ.hora) ? ' · ' : ''}</strong>
+                      {occ.titulo}
+                    </span>
+                  ))}
+                  {restCount > 0 && <span className="calendar-day__holy">+{restCount} mais</span>}
+                </div>
+              )}
+
+              {/* Visualização Mobile: bolinhas coloridas e contador compacto */}
+              {!isOtherMonth && day.length > 0 && (
+                <div className="calendar-day__events-mobile" aria-hidden="true">
+                  <div className="calendar-dots">
+                    {dots.map((occ) => (
+                      <span
+                        key={occ.ocorrenciaId}
+                        className="calendar-dot"
+                        style={{ background: occ.categoria?.cor ?? DEFAULT_COLOR }}
+                      />
+                    ))}
+                    {day.length > 3 && (
+                      <span className="calendar-dot-count">+{day.length - 3}</span>
+                    )}
+                  </div>
+                </div>
+              )}
             </button>
           );
         })}

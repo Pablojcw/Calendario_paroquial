@@ -5,7 +5,8 @@ import { api } from '../api/endpoints.js';
 import { OccurrenceItem } from '../components/OccurrenceList.js';
 import { Spinner } from '../components/Spinner.js';
 import { filterDefaults, useGlobalFilters } from '../lib/filters.js';
-import { formatBR, weekdayLabel } from '../lib/date.js';
+import { formatBR, todayISO, weekdayLabel } from '../lib/date.js';
+import { getLiturgicalFeast } from '../lib/liturgy.js';
 import type { PublicOccurrence } from '../api/types.js';
 
 const MONTHS_SHORT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -87,10 +88,12 @@ export function UpcomingPage() {
                 <span className="day">{Number(iso.slice(8, 10))}</span>
                 <span className="month">{MONTHS_SHORT[Number(iso.slice(5, 7)) - 1]}</span>
               </div>
-              <div>
-                <p style={{ margin: '0 0 0.5rem', color: 'var(--muted)', fontSize: '0.85rem' }}>
-                  {weekdayLabel(iso)} · {formatBR(iso)}
-                </p>
+              <div style={{ flex: 1 }}>
+                <h3 className="upcoming-date-header" style={{ margin: '0 0 0.6rem', fontSize: '1.05rem', color: 'var(--burgundy)' }}>
+                  {formatBR(iso)} — {weekdayLabel(iso)}
+                  {getLiturgicalFeast(iso) && ` · ${getLiturgicalFeast(iso)}`}
+                  {iso === todayISO() && ' · hoje'}
+                </h3>
                 <ul className="occ-list">
                   {occurrences.map((occ) => (
                     <OccurrenceItem key={occ.ocorrenciaId} occ={occ} />

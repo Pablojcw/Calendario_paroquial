@@ -36,19 +36,27 @@ export function todayISO(): string {
   return toISO(new Date());
 }
 
-export function gridStart(iso: string): string {
-  const dow = parseISO(iso).getDay();
-  const date = parseISO(iso);
-  date.setDate(date.getDate() - dow);
-  return toISO(date);
-}
-
 export function monthGrid(iso: string): string[] {
-  const first = parseISO(iso);
-  const start = gridStart(toISO(first));
+  const date = parseISO(iso);
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  // 1º dia do mês
+  const first = new Date(year, month, 1);
+  const firstDow = first.getDay(); // 0 = Domingo, 1 = Segunda, etc.
+
+  // Começar no Domingo da semana do dia 1
+  const cursor = new Date(year, month, 1 - firstDow);
+
+  // Último dia do mês
+  const last = new Date(year, month + 1, 0);
+  const daysInMonth = last.getDate();
+
+  // Total de células necessárias para cobrir todas as semanas do mês (múltiplo de 7)
+  const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7;
+
   const cells: string[] = [];
-  const cursor = parseISO(start);
-  for (let i = 0; i < 42; i++) {
+  for (let i = 0; i < totalCells; i++) {
     cells.push(toISO(cursor));
     cursor.setDate(cursor.getDate() + 1);
   }
@@ -74,6 +82,16 @@ export function weekdayLabel(iso: string): string {
 export function humanTime(hora: string | null): string {
   if (!hora) return '';
   return hora.slice(0, 5);
+}
+
+export function formatHorario(hora: string | null | undefined): string {
+  if (!hora) return '';
+  const clean = hora.trim().slice(0, 5);
+  const [h, m] = clean.split(':');
+  if (!h) return clean;
+  const hourNum = parseInt(h, 10);
+  if (m === '00' || !m) return `${hourNum}h`;
+  return `${hourNum}h${m}`;
 }
 
 export type RecorrenciaLabelOptions = {

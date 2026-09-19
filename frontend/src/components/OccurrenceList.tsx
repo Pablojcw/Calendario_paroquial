@@ -1,32 +1,50 @@
 import type { CSSProperties } from 'react';
 import type { PublicOccurrence } from '../api/types.js';
-import { humanTime, weekdayLabel } from '../lib/date.js';
+import { formatHorario } from '../lib/date.js';
 
 export function OccurrenceItem({ occ }: { occ: PublicOccurrence }) {
-  const cor = occ.categoria?.cor ?? '#7f1d1d';
+  const cor = occ.categoria?.cor ?? '#1d4ed8';
+
+  // Elimina redundâncias: se local já diz "Igreja Matriz", não repete
+  const localDisplay = (occ.local || occ.comunidade?.nome || '').trim();
+  const horario = formatHorario(occ.hora);
 
   return (
     <li className="occ-item" style={{ '--brand': cor } as CSSProperties}>
-      <h4>
-        <time>{humanTime(occ.hora)}</time> {occ.titulo}
-      </h4>
-      {occ.serie && (
-        <span className="serie-badge">
-          {occ.serie.titulo} · dia {occ.serie.dia} de {occ.serie.total}
-        </span>
-      )}
-      <div className="meta">
-        {occ.local && <span>{occ.local}</span>}
-        {occ.responsavel && <span>{occ.responsavel}</span>}
-        {occ.comunidade && <span>{occ.comunidade.nome}</span>}
-        <span>{weekdayLabel(occ.data)}</span>
+      <h4 className="occ-item__title">{occ.titulo}</h4>
+
+      <div className="occ-item__info">
+        {horario && (
+          <div className="occ-item__row">
+            <span className="occ-item__label">Horário:</span>{' '}
+            <span className="occ-item__val">{horario}</span>
+          </div>
+        )}
+
+        {localDisplay && (
+          <div className="occ-item__row">
+            <span className="occ-item__label">Local:</span>{' '}
+            <span className="occ-item__val">{localDisplay}</span>
+          </div>
+        )}
+
+        {occ.responsavel && (
+          <div className="occ-item__row">
+            <span className="occ-item__label">Responsável:</span>{' '}
+            <span className="occ-item__val">{occ.responsavel}</span>
+          </div>
+        )}
       </div>
+
       {occ.categoria && (
-        <span className="categoria-tag" style={{ background: cor }}>
-          {occ.categoria.nome}
-        </span>
+        <div className="occ-item__tag-wrap">
+          <span className="categoria-tag" style={{ background: cor }}>
+            {occ.categoria.nome}
+          </span>
+        </div>
       )}
-      {occ.descricao && <p style={{ margin: '0.4rem 0 0', fontSize: '0.85rem' }}>{occ.descricao}</p>}
+
+      {occ.descricao && <p className="occ-item__desc">{occ.descricao}</p>}
     </li>
   );
 }

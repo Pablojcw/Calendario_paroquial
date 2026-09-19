@@ -6,6 +6,7 @@ import { OccurrenceList } from '../components/OccurrenceList.js';
 import { Spinner } from '../components/Spinner.js';
 import { filterDefaults, useGlobalFilters } from '../lib/filters.js';
 import { formatBR, monthGrid, monthLabel, shiftMonth, todayISO, weekdayLabel } from '../lib/date.js';
+import { getLiturgicalFeast } from '../lib/liturgy.js';
 
 export function CalendarPage() {
   const initialMonth = useMemo(() => todayISO(), []);
@@ -14,8 +15,15 @@ export function CalendarPage() {
 
   const range = useMemo(() => {
     const grid = monthGrid(monthISO);
-    return { from: grid[0] ?? todayISO(), to: grid[41] ?? todayISO() };
+    return { from: grid[0] ?? todayISO(), to: grid[grid.length - 1] ?? todayISO() };
   }, [monthISO]);
+
+  const handleSelectDay = (iso: string) => {
+    setSelectedISO(iso);
+    if (iso.slice(0, 7) !== monthISO.slice(0, 7)) {
+      setMonthISO(iso);
+    }
+  };
 
   const { filters, setFilter } = useGlobalFilters();
   const { categories, communities } = filterDefaults.useQueries();
@@ -117,7 +125,7 @@ export function CalendarPage() {
             monthISO={monthISO}
             occurrences={eventsQuery.data ?? []}
             selectedISO={selectedISO}
-            onSelectDay={setSelectedISO}
+            onSelectDay={handleSelectDay}
           />
         )}
       </div>
@@ -125,6 +133,7 @@ export function CalendarPage() {
       <section className="day-panel" aria-live="polite">
         <h3>
           {formatBR(selectedISO)} — {weekdayLabel(selectedISO)}
+          {getLiturgicalFeast(selectedISO) && ` · ${getLiturgicalFeast(selectedISO)}`}
           {todaySelected && ' · hoje'}
         </h3>
         {eventsQuery.isLoading ? <Spinner /> : <OccurrenceList occurrences={selectedOccurrences} />}

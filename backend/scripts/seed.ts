@@ -51,6 +51,30 @@ async function ensureCommunities(): Promise<void> {
   }
 }
 
+const CATEGORIAS_BASE = [
+  { nome: 'Missa', cor: '#1d4ed8', ordem: 10 },
+  { nome: 'Celebração da Palavra', cor: '#0284c7', ordem: 20 },
+  { nome: 'Devoções e Oração', cor: '#7c3aed', ordem: 30 },
+  { nome: 'Novenas e Tríduos', cor: '#be185d', ordem: 40 },
+  { nome: 'Catequese e Formação', cor: '#059669', ordem: 50 },
+  { nome: 'Acampamentos e Retiros', cor: '#d97706', ordem: 60 },
+  { nome: 'Sacramentos e Bênçãos', cor: '#9333ea', ordem: 70 },
+  { nome: 'Eventos Sociais e Festas', cor: '#ea580c', ordem: 80 },
+  { nome: 'Reuniões e Clero', cor: '#475569', ordem: 90 },
+];
+
+async function ensureCategories(): Promise<void> {
+  for (const cat of CATEGORIAS_BASE) {
+    await pool.query(
+      `INSERT INTO categories (nome, cor, ordem)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (nome) DO UPDATE SET cor = EXCLUDED.cor, ordem = EXCLUDED.ordem`,
+      [cat.nome, cat.cor, cat.ordem],
+    );
+  }
+  console.log('Categorias atualizadas.');
+}
+
 async function ensureParishInfo(): Promise<void> {
   const mensagemPadre = `Queridos irmãos e irmãs em Cristo, povo amado da paróquia Nossa Senhora de Fátima: Paróquia de gente feliz. Ao nos aproximarmos do ano de 2026, nossos corações se enchem de gratidão e alegria. Este será um tempo especial para nós: celebraremos 95 anos de história, fé, missão, lágrimas, conquistas, lutas e sonhos que se entrelaçam na vida desta comunidade. Noventa e cinco anos de um povo que caminha, que crê, que serve, que se levanta, que ama.
 
@@ -96,6 +120,7 @@ Que Nossa Senhora de Fátima nos cubra com seu manto; e São Francisco de Paula 
 async function main(): Promise<void> {
   await ensureAdmin();
   await ensureCommunities();
+  await ensureCategories();
   await ensureParishInfo();
   console.log('Seed concluído.');
   await pool.end();

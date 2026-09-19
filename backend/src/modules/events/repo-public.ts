@@ -20,7 +20,7 @@ export async function queryEventsPublic(input: PublicRangeInput): Promise<{ rows
   conditions.push(`e.visibilidade = ${push('publico')}`);
   conditions.push(`e.status = ${push('confirmado')}`);
   conditions.push(`e.data_inicio <= ${push(input.to)}`);
-  conditions.push(`(e.data_fim IS NULL OR e.data_fim >= ${push(input.from)})`);
+  conditions.push(`COALESCE(e.data_fim, e.data_inicio) >= ${push(input.from)}`);
   conditions.push(`NOT EXISTS (SELECT 1 FROM events filho WHERE filho.evento_pai_id = e.id)`);
 
   if (input.comunidadeId) {
