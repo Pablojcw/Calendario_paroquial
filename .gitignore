@@ -26,3 +26,6 @@ Thumbs.db
 # Banco (dump/backup locais)
 *.sql.bak
 *.dump
+
+# Pastas locais temporárias
+Imagens das capelas/

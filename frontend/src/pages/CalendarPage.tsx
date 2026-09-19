@@ -84,20 +84,17 @@ export function CalendarPage() {
             ))}
           </select>
         </div>
-        <button type="button" className="btn no-print" onClick={() => window.print()}>
-          Imprimir
-        </button>
       </div>
 
       <div className="card">
         <div className="calendar-toolbar">
-          <div>
-            <button type="button" className="btn" aria-label="Mês anterior" onClick={() => setMonthISO((m) => shiftMonth(m, -1))}>
+          <div style={{ display: 'flex', gap: '0.25rem' }}>
+            <button type="button" className="btn btn--sm" aria-label="Mês anterior" onClick={() => setMonthISO((m) => shiftMonth(m, -1))}>
               ←
             </button>
             <button
               type="button"
-              className="btn"
+              className="btn btn--sm"
               aria-label="Mês seguinte"
               onClick={() => setMonthISO((m) => shiftMonth(m, 1))}
             >
@@ -107,7 +104,7 @@ export function CalendarPage() {
           <h3 style={{ margin: 0 }}>{monthLabel(monthISO)}</h3>
           <button
             type="button"
-            className="btn btn--ghost"
+            className="btn btn--sm btn--ghost"
             onClick={() => {
               const today = todayISO();
               setMonthISO(today);

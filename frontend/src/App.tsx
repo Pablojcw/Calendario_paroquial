@@ -5,6 +5,10 @@ import { AdminLayout } from './components/AdminLayout.js';
 import { ProtectedRoute } from './components/ProtectedRoute.js';
 import { CalendarPage } from './pages/CalendarPage.js';
 import { UpcomingPage } from './pages/UpcomingPage.js';
+import { MassSchedulePage } from './pages/MassSchedulePage.js';
+import { ChapelsPage } from './pages/ChapelsPage.js';
+import { PastoralActivitiesPage } from './pages/PastoralActivitiesPage.js';
+import { SacramentsPage } from './pages/SacramentsPage.js';
 import { InstitutionalPage } from './pages/InstitutionalPage.js';
 import { LoginPage } from './pages/LoginPage.js';
 import { DashboardPage } from './pages/Admin/DashboardPage.js';
@@ -24,6 +28,10 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<CalendarPage />} />
           <Route path="/proximos" element={<UpcomingPage />} />
+          <Route path="/missas" element={<MassSchedulePage />} />
+          <Route path="/capelas" element={<ChapelsPage />} />
+          <Route path="/atividades" element={<PastoralActivitiesPage />} />
+          <Route path="/sacramentos" element={<SacramentsPage />} />
           <Route path="/institucional" element={<InstitutionalPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
