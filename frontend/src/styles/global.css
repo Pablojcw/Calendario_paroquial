@@ -692,12 +692,17 @@ textarea {
   box-shadow: 0 4px 14px rgba(45, 71, 150, 0.08);
 }
 
-.occ-item__top {
+.occ-item__header {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.15rem;
+}
+
+.occ-item__category-wrap {
+  display: flex;
+  align-items: center;
 }
 
 .occ-item__title {
@@ -1215,16 +1220,115 @@ textarea {
 }
 
 /* ============================================================
-   UTILITÁRIOS E AJUSTES GERAIS
+   UTILITÁRIOS, BADGES E TABELAS ADMINISTRATIVAS
    ============================================================ */
 .no-print {
   /* Classe preservada para compatibilidade */
 }
 
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.badge--ok {
+  background: #dcfce7 !important;
+  color: #15803d !important;
+}
+
+.badge--danger {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+}
+
+.badge--warn {
+  background: #fef3c7 !important;
+  color: #d97706 !important;
+}
+
+/* ============================================================
+   ÁREA ADMINISTRATIVA (ADMIN)
+   ============================================================ */
+.admin-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-subbar {
+  background: #eef5fb;
+  border-bottom: 1px solid var(--line);
+  padding: 0.55rem 1rem;
+}
+
+.admin-subbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.88rem;
+  flex-wrap: wrap;
+}
+
+.admin-subbar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+}
+
+.admin-subbar__back {
+  color: var(--primary);
   font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-subbar__back:hover {
+  text-decoration: underline;
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.table th {
+  background: #f1f5f9;
+  color: var(--primary-dark);
+  font-weight: 700;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 2px solid var(--line);
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.table tr:hover td {
+  background: #f8fafc;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
 }

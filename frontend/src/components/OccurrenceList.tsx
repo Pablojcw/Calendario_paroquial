@@ -11,13 +11,15 @@ export function OccurrenceItem({ occ }: { occ: PublicOccurrence }) {
 
   return (
     <li className="occ-item" style={{ '--brand': cor } as CSSProperties}>
-      <div className="occ-item__top">
+      <div className="occ-item__header">
         <h4 className="occ-item__title">{occ.titulo}</h4>
         {occ.categoria && (
-          <span className="categoria-tag" style={{ backgroundColor: cor }}>
-            <span className="categoria-tag__dot" />
-            {occ.categoria.nome}
-          </span>
+          <div className="occ-item__category-wrap">
+            <span className="categoria-tag" style={{ backgroundColor: cor }}>
+              <span className="categoria-tag__dot" />
+              {occ.categoria.nome}
+            </span>
+          </div>
         )}
       </div>
 

@@ -207,8 +207,7 @@ export function ChapelsPage() {
                   className="chapel-card__image"
                   loading="lazy"
                   onError={(e) => {
-                    // Fallback se imagem demorar
-                    (e.target as HTMLImageElement).src = '/images/banner_topo.png';
+                    (e.target as HTMLImageElement).src = '/images/capelas/igreja_matriz.png';
                   }}
                 />
                 <span className="chapel-card__badge-tag">{c.bairro}</span>
@@ -261,23 +260,6 @@ export function ChapelsPage() {
             </div>
           );
         })}
-      </div>
-
-      {/* MURAL COMPLETO DA AGENDA */}
-      <div className="card" style={{ marginTop: '2.5rem', textAlign: 'center', background: '#f8fafc' }}>
-        <h3 style={{ color: 'var(--primary-dark)', marginBottom: '0.4rem' }}>
-          Mural das Capelas da Agenda Pastoral 2026
-        </h3>
-        <p style={{ color: 'var(--muted)', maxWidth: '700px', margin: '0 auto 1.2rem', fontSize: '0.92rem' }}>
-          Foto oficial das fachadas das capelas publicada na página 12 da Agenda Paroquial 2026.
-        </p>
-        <div style={{ maxWidth: '900px', margin: '0 auto', overflow: 'hidden', borderRadius: '12px', border: '1px solid var(--line)' }}>
-          <img
-            src="/images/documentos/capelas_mural.png"
-            alt="Mural oficial das capelas da Paróquia de Fátima"
-            style={{ width: '100%', height: 'auto', display: 'block' }}
-          />
-        </div>
       </div>
     </div>
   );
