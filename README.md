@@ -7,10 +7,10 @@
 
 ## 👥 Equipe de Desenvolvimento
 
-| Aluno | RU | E-mail Institucional / Contato |
-| :--- | :--- | :--- |
-| **Wallace Fernando Guedes da Silva** | **5146520** | `wallace.fernando.guedes@gmail.com` |
-| **Pablo Patrick Machado** | **5200651** | `pablo.patrick.machado@gmail.com` |
+| Aluno | RU |
+| :--- | :--- |
+| **Wallace Fernando Guedes da Silva** | **5146520** |
+| **Pablo Patrick Machado** | **5200651** |
 
 ---
 
