@@ -21,7 +21,7 @@
 - **Etapa:** Trabalho Final (100% da Nota)
 - **Repositório Oficial:** [https://github.com/Pablojcw/Calendario_paroquial](https://github.com/Pablojcw/Calendario_paroquial)
 - **Fork de Desenvolvimento:** [https://github.com/wallace-pv/Calendario_paroquial](https://github.com/wallace-pv/Calendario_paroquial)
-- **Vídeo de Demonstração Prática (YouTube):** *[Inserir Link do Vídeo de até 5 min]*
+- **Vídeo de Demonstração Prática (YouTube):** [https://youtu.be/rXeMlh2tCm8](https://youtu.be/rXeMlh2tCm8)
 
 ---
 
